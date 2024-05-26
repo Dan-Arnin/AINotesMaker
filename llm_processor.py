@@ -7,8 +7,6 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 
 
-
-# OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 os.environ['OPENAI_API_KEY'] = st.secrets.OPENAI_API_KEY
 
 class prompts():

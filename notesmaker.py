@@ -16,7 +16,6 @@ def main():
     st.set_page_config(page_title="AI Notes Maker", page_icon=":notebook_with_decorative_cover:")
     st.markdown("<style>body { background-color: black; color: white; }</style>", unsafe_allow_html=True)
 
-    st.title("AI Notes Maker")
     notes_data = ""
 
     # Create placeholders for input fields
@@ -33,6 +32,7 @@ def main():
     if st.session_state.main_app:
 
         with content_type_placeholder.container():
+            st.title("AI Notes Maker")
             content_type = st.selectbox("Select content type", ["PDF", "YouTube Link", "Website"])
 
             if content_type in ["YouTube Link", "Website"]:
@@ -75,7 +75,15 @@ def main():
             submit_placeholder.empty()
             llm = llm_invoker()
             st.session_state.grag.constructGraph(notes_data)
-            pre_notes_data = " ".join(st.session_state.grag.lines)
+            if "lines" not in st.session_state:
+                st.session_state.lines = []
+                for i in st.session_state.grag.documents:
+                    print(str(i))
+                    st.session_state.lines.append(str(i))
+
+
+            # print(st.session_state.grag.documents)
+            pre_notes_data = " ".join(st.session_state.lines)
             pre_notes_list = split_into_chunks(pre_notes_data)
 
             summarized_list = []
@@ -101,7 +109,7 @@ def main():
                     mime="application/pdf",
                     key = "download_button",
                 ):
-                    st.session_state.sidebar = True
+                    st.session_state.sidebar_ = True
 
     if st.session_state.sidebar_ == True:
         st.session_state.main_app = False
